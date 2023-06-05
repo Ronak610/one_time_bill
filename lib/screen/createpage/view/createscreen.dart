@@ -34,9 +34,8 @@ class _CreateScreenState extends State<CreateScreen> {
         ),
         body: Column(
           children: [
-            Container(
+            Divider(
               height: 1,
-              width: double.infinity,
               color: Colors.black26,
             ),
             Align(
@@ -53,7 +52,9 @@ class _CreateScreenState extends State<CreateScreen> {
                   ),
                   child: Text(
                     "Select All",
-                    style: TextStyle(decoration: TextDecoration.lineThrough),
+                    style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                    ),
                   ),
                 ),
               ),
@@ -65,45 +66,86 @@ class _CreateScreenState extends State<CreateScreen> {
                   itemCount: createBillController.buildingsList.length,
                   itemBuilder: (context, index) {
                     return SizedBox(
-                      height:  createBillController.buildingsList[index].buildings!.length * 50+55,
+                      height: createBillController
+                                  .buildingsList[index].buildings!.length *
+                              50 +
+                          55,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                           Container(
-                              height: 50,
-                              padding: const EdgeInsets.all(8.0),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                " * Building ${createBillController.buildingsList[index].buildingName}",
-                                style: TextStyle(),
-                              ),
+                          Container(
+                            height: 50,
+                            padding: const EdgeInsets.all(8.0),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              " * Building ${createBillController.buildingsList[index].buildingName}",
+                              style: TextStyle(),
                             ),
+                          ),
                           Expanded(
                             child: Obx(
                               () => Column(
                                 mainAxisSize: MainAxisSize.min,
-                                children: createBillController.buildingsList[index].buildings!
+                                children: createBillController
+                                    .buildingsList[index].buildings!
                                     .asMap()
                                     .entries
-                                    .map((e) => SizedBox(
-                                  height: 50,
-                                      child: ListTile(
-                                            leading: Checkbox(
-                                              value: createBillController.buildingsList[index].buildings![e.key].checked,
-                                              onChanged: (value) {
-                                                createBillController.buildingsList[index] = BuildingModel(
-                                                  buildingName: createBillController.buildingsList[index].buildingName,
-                                                  buildings: createBillController.buildingsList[index].buildings!.asMap().entries.map((en) => CreateBillModel(name: createBillController.buildingsList[index].buildings![en.key].name,selected: createBillController.buildingsList[index].buildings![en.key].selected,checked: en.key == e.key ? true : false)).toList()
-                                                );
-                                              },
-                                            ),
-                                            title: Text(
-                                                "${createBillController.buildingsList[index].buildings![e.key].name}"),
-                                            trailing: IconButton(
-                                                icon: Icon(Icons.add),
-                                                onPressed: () {}),
+                                    .map(
+                                      (e) => SizedBox(
+                                        height: 50,
+                                        child: ListTile(
+                                          leading: Checkbox(
+                                            value: createBillController
+                                                .buildingsList[index]
+                                                .buildings![e.key]
+                                                .checked,
+                                            onChanged: (value) {
+                                              createBillController
+                                                      .buildingsList[index] =
+                                                  BuildingModel(
+                                                      buildingName:
+                                                          createBillController
+                                                              .buildingsList[
+                                                                  index]
+                                                              .buildingName,
+                                                      buildings:
+                                                          createBillController
+                                                              .buildingsList[
+                                                                  index]
+                                                              .buildings!
+                                                              .asMap()
+                                                              .entries
+                                                              .map(
+                                                                (en) => CreateBillModel(
+                                                                    name: createBillController
+                                                                        .buildingsList[
+                                                                            index]
+                                                                        .buildings![en
+                                                                            .key]
+                                                                        .name,
+                                                                    selected: createBillController
+                                                                        .buildingsList[
+                                                                            index]
+                                                                        .buildings![en
+                                                                            .key]
+                                                                        .selected,
+                                                                    checked: en.key ==
+                                                                            e.key
+                                                                        ? true
+                                                                        : false),
+                                                              )
+                                                              .toList());
+                                            },
                                           ),
-                                    ))
+                                          title: Text(
+                                            "${createBillController.buildingsList[index].buildings![e.key].name}",
+                                          ),
+                                          trailing: IconButton(
+                                              icon: Icon(Icons.add),
+                                              onPressed: () {}),
+                                        ),
+                                      ),
+                                    )
                                     .toList(),
                               ),
                             ),

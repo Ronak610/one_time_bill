@@ -1,8 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:onetimebill/screen/createpage/model/BuildingModel.dart';
 import 'package:onetimebill/screen/createpage/model/CreateBillModel.dart';
 
 class CreateBillController extends GetxController {
+  RxString fdate = "".obs;
+  DateTime? firstDate = DateTime(2023, 6, 3);
+  DateTime? lastDate = DateTime(2023, 6, 6);
+  RxString dudate = "".obs;
+  RxString pubdate = "".obs;
+  RxDouble Totalamount = 0.0.obs;
+  RxString dropvalue = "Common Area Usage".obs;
+  TextEditingController txtAmount = TextEditingController();
   RxList<BuildingModel> buildingsList = [
     BuildingModel(
       buildings: [
@@ -38,4 +47,3 @@ class CreateBillController extends GetxController {
     ),
   ].obs;
 }
-
