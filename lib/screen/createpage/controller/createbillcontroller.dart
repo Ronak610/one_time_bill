@@ -3,6 +3,9 @@ import 'package:onetimebill/screen/createpage/model/BuildingModel.dart';
 import 'package:onetimebill/screen/createpage/model/CreateBillModel.dart';
 
 class CreateBillController extends GetxController {
+  String searchvale  = "";
+  RxInt SeltcedButton = 0.obs;
+  RxBool selectAll = false.obs;
   RxList<BuildingModel> buildingsList = [
     BuildingModel(
       buildings: [
@@ -37,5 +40,6 @@ class CreateBillController extends GetxController {
       buildingName: "D",
     ),
   ].obs;
+  RxList<CreateBillModel> searchlist = <CreateBillModel>[].obs;
 }
 
