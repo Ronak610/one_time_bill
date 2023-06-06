@@ -12,7 +12,7 @@ class SelecteScreen extends StatefulWidget {
 
 class _SelecteScreenState extends State<SelecteScreen> {
 
-  CreateBillController createBillController = Get.put(CreateBillController());
+  CreateBillController1 createBillController = Get.put(CreateBillController1());
 
   @override
   Widget build(BuildContext context) {
