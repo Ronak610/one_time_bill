@@ -12,13 +12,14 @@ void main() {
   runApp(
     GetMaterialApp(theme: ThemeData(useMaterial3: true),
       debugShowCheckedModeBanner: false,
+      // initialRoute: 'Bill',
       routes: {
-      '/':(p0) => BillScreen()
-      //   '/': (p0) => tab(),
-      //   'D': (p0) => DraftScreen(),
-      //   'P': (p0) => PublishScreen(),
-      //   'C': (p0) => CreateScreen(),
-      //   'S': (p0) => SelecteScreen(),
+       '/': (p0) => tab(),
+        'Bill':(p0) => BillScreen(),
+        'D': (p0) => DraftScreen(),
+        'P': (p0) => PublishScreen(),
+        'C': (p0) => CreateScreen(),
+        'S': (p0) => SelecteScreen(),
       },
     ),
   );

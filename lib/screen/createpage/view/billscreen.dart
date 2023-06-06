@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:onetimebill/screen/createpage/controller/createbillcontroller.dart';
 
 class BillScreen extends StatefulWidget {
@@ -12,7 +10,8 @@ class BillScreen extends StatefulWidget {
 }
 
 class _BillScreenState extends State<BillScreen> {
-  CreateBillController createBillController = Get.put(CreateBillController());
+  CreateBillController1 createBillController = Get.put(CreateBillController1());
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +24,22 @@ class _BillScreenState extends State<BillScreen> {
               fontSize: 20,
             ),
           ),
+          actions: [
+            Obx(
+              () => ElevatedButton(
+                onPressed: () {
+                  createBillController.Gstonoff.value = !createBillController.Gstonoff.value;
+                },
+                child: Text(
+                  createBillController.Gstonoff.value ? "GST:ON" : "GST:OFF",
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                    createBillController.Gstonoff.value ? Colors.green : Colors.red),
+              ),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -52,24 +67,11 @@ class _BillScreenState extends State<BillScreen> {
                           lastDate: DateTime(2050));
                       if (date != null) {
                         createBillController.firstDate = date;
-                        if ((createBillController.firstDate!.year ==
-                                    createBillController.lastDate!.year) &&
-                                (createBillController.firstDate!.month ==
-                                    createBillController.lastDate!.month) &&
-                                (createBillController.firstDate!.day !=
-                                    createBillController.lastDate!.day) ||
-                            (createBillController.firstDate!.year ==
-                                    createBillController.lastDate!.year) &&
-                                (createBillController.firstDate!.month !=
-                                    createBillController.lastDate!.month) &&
-                                (createBillController.firstDate!.day ==
-                                    createBillController.lastDate!.day) ||
-                            (createBillController.firstDate!.year !=
-                                    createBillController.lastDate!.year) &&
-                                (createBillController.firstDate!.month ==
-                                    createBillController.lastDate!.month) &&
-                                (createBillController.firstDate!.day ==
-                                    createBillController.lastDate!.day)) {
+                        print(
+                            "===== ${date.day} ${createBillController.lastDate!.day}");
+                        if (createBillController.firstDate!
+                                .compareTo(createBillController.lastDate!) <=
+                            0) {
                           createBillController.fdate.value =
                               "${date.day} / ${date.month} / ${date.year}";
                         }
@@ -96,24 +98,9 @@ class _BillScreenState extends State<BillScreen> {
                           lastDate: DateTime(2050));
                       if (duedate != null) {
                         createBillController.lastDate = duedate;
-                        if ((createBillController.firstDate!.year ==
-                                    createBillController.lastDate!.year) &&
-                                (createBillController.firstDate!.month ==
-                                    createBillController.lastDate!.month) &&
-                                (createBillController.firstDate!.day !=
-                                    createBillController.lastDate!.day) ||
-                            (createBillController.firstDate!.year ==
-                                    createBillController.lastDate!.year) &&
-                                (createBillController.firstDate!.month !=
-                                    createBillController.lastDate!.month) &&
-                                (createBillController.firstDate!.day ==
-                                    createBillController.lastDate!.day) ||
-                            (createBillController.firstDate!.year !=
-                                    createBillController.lastDate!.year) &&
-                                (createBillController.firstDate!.month ==
-                                    createBillController.lastDate!.month) &&
-                                (createBillController.firstDate!.day ==
-                                    createBillController.lastDate!.day)) {
+                        if (createBillController.firstDate!
+                                .compareTo(createBillController.lastDate!) <=
+                            0) {
                           createBillController.dudate.value =
                               "${duedate.day} / ${duedate.month} / ${duedate.year}";
                         }
@@ -181,27 +168,32 @@ class _BillScreenState extends State<BillScreen> {
                   ),
                   onChanged: (value) {
                     if (value.isNotEmpty) {
+                      createBillController.GST.value = (double.parse(value) * 15) / 100;
                       createBillController.Totalamount.value =
-                          (double.parse(value) * 15) / 100;
-                      createBillController.Totalamount.value =
-                          double.parse(value) +
-                              createBillController.Totalamount.value;
+                          double.parse(value) + createBillController.GST.value;
                     } else {
                       createBillController.Totalamount.value = 0;
                     }
                   },
                 ),
               ),
-              ListTile(
-                leading: Text("GST Amount :"),
-                title: TextFormField(
-                  controller: TextEditingController(text: "15%"),
-                  readOnly: true,
-                  keyboardType: TextInputType.none,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+              Obx(
+                () => createBillController.Gstonoff.value
+                    ? ListTile(
+                        leading: Text("GST Amount :"),
+                        title: TextFormField(
+                          controller: TextEditingController(
+                              text: "15% : \$${createBillController.GST.value.toStringAsFixed(2)}"),
+                          readOnly: true,
+                          keyboardType: TextInputType.none,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        height: 0,
+                      ),
               ),
               ListTile(
                 leading: Text("Total Bill Amount :"),
@@ -226,7 +218,8 @@ class _BillScreenState extends State<BillScreen> {
                     readOnly: true,
                     controller: TextEditingController(
                         text: createBillController.pubdate.value),
-                    decoration: InputDecoration(hintText: "DD/MM/YYYY",
+                    decoration: InputDecoration(
+                      hintText: "DD/MM/YYYY",
                       suffixIcon: IconButton(
                         onPressed: () {
                           createBillController.pubdate.value = "";
@@ -242,8 +235,11 @@ class _BillScreenState extends State<BillScreen> {
                           firstDate: DateTime(2023),
                           lastDate: DateTime(2050));
                       if (pdate != null) {
-                        createBillController.pubdate.value =
-                            "${pdate.day} / ${pdate.month} / ${pdate.year}";
+                        if (createBillController.firstDate!.compareTo(pdate) <=
+                            0) {
+                          createBillController.pubdate.value =
+                              "${pdate.day} / ${pdate.month} / ${pdate.year}";
+                        }
                       }
                     },
                   ),
